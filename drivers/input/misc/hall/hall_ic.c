@@ -213,7 +213,7 @@ static ssize_t flip_status_store(struct device *dev,
 			continue;
 
 		if (hall->input) {
-			input_report_switch(hall->input, hall->event, state);
+			input_report_switch(hall->input, 0x00, state);
 			input_sync(hall->input);
 			pr_info("[sec_input] %s: %s %d: %d\n", __func__, hall->name, hall->event, state);
 		}
@@ -311,7 +311,7 @@ static void dump_hall_event(struct device *dev)
 			if (hall->event != SW_FOLDER)
 				continue;
 			if (hall->input) {
-				input_report_switch(hall->input, hall->event, 0);
+				input_report_switch(hall->input, 0x00, 0);
 				input_sync(hall->input);
 				pr_info("[sec_input] %s: %s %d\n", __func__, hall->name, hall->event);
 			}
@@ -341,7 +341,7 @@ static void hall_ic_work(struct work_struct *work)
 			state ? "close" : "open");
 
 		if (hall->input) {
-			input_report_switch(hall->input, hall->event, state);
+			input_report_switch(hall->input,0x00, state);
 			input_sync(hall->input);
 		}
 
@@ -376,7 +376,7 @@ static void hall_ic_work(struct work_struct *work)
 	state = hall->state ^ hall->active_low;
 	pr_info("%s %s %s(%d)\n", __func__, hall->name,
 		state ? "close" : "open", hall->state);
-
+	
 	if (hall->input) {
 		input_report_switch(hall->input, hall->event, state);
 		input_sync(hall->input);
@@ -439,14 +439,12 @@ static irqreturn_t hall_ic_detect(int irq, void *dev_id)
 	struct hall_ic_data *hall = dev_id;
 	struct hall_ic_pdata *pdata = gddata->pdata;
 	int state = !!gpio_get_value_cansleep(hall->gpio);
-
 	pr_info("%s %s(%d)\n", __func__,
 		hall->name, state);
 	cancel_delayed_work_sync(&hall->dwork);
 #if IS_ENABLED(CONFIG_SEC_FACTORY)
 	schedule_delayed_work(&hall->dwork, msecs_to_jiffies(pdata->debounce_interval));
 #else
-
 #if IS_ENABLED(CONFIG_TOUCHSCREEN_DUAL_FOLDABLE) || IS_ENABLED(CONFIG_SEC_INPUT_MULTI_DEVICE)
 	__pm_wakeup_event(hall->ws, HALL_IC_WAKEUP_TIMEOUT);
 	schedule_delayed_work(&hall->dwork, msecs_to_jiffies(pdata->debounce_interval));
@@ -623,7 +621,7 @@ static struct hall_ic_pdata *hall_ic_parsing_dt(struct device *dev)
 		if (hall->gpio < 0) {
 			ret = hall->gpio;
 			if (ret) {
-				pr_err("Failed to get gpio flags %d\n", ret);
+				pr_info("Failed to get gpio flags %d\n", ret);
 				return ERR_PTR(ret);
 			}
 		}
@@ -642,7 +640,7 @@ static struct hall_ic_pdata *hall_ic_parsing_dt(struct device *dev)
 		}
 #if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 10, 0))
 		if (hall->event == 0x15) { /* SW_FLIP */
-			hall->event = 0x10;
+			hall->event = 0x00;
 		} else if (hall->event == 0x1b) {	/* SW_CERTIFYHALL */
 			hall->event = 0x0b;
 		} else if (hall->event == 0x1e) {	/* SW_WACOM_HALL */
@@ -769,7 +767,7 @@ static int hall_ic_resume(struct device *dev)
 		pr_info("%s %s %s(%d)\n", __func__, hall->name,
 			state ? "close" : "open", hall->state);
 		disable_irq_wake(hall->irq);
-		input_report_switch(hall->input, hall->event, state);
+		input_report_switch(hall->input, 0x00, state);
 		input_sync(hall->input);
 	}
 	return 0;
