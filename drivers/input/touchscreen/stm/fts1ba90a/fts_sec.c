@@ -1290,34 +1290,35 @@ void fts_print_frame(struct fts_ts_info *info, short *min, short *max)
 	if (pStr == NULL)
 		return;
 
-	snprintf(pTmp, 4, "    ");
-	strlcat(pStr, pTmp, lsize);
+	memset(pStr, 0x0, 6 * (info->SenseChannelLength + 1));
+	snprintf(pTmp, sizeof(pTmp), "    ");
+	strlcat(pStr, pTmp, 6 * info->SenseChannelLength);
 
 	for (i = 0; i < info->SenseChannelLength; i++) {
-		snprintf(pTmp, 6, "Rx%02d  ", i);
-		strlcat(pStr, pTmp, lsize);
+		snprintf(pTmp, sizeof(pTmp), "Rx%02d  ", i);
+		strlcat(pStr, pTmp, 6 * info->SenseChannelLength);
 	}
 
 	input_raw_info(true, &info->client->dev, "%s\n", pStr);
 
 	memset(pStr, 0x0, lsize);
-	snprintf(pTmp, 2, " +");
-	strlcat(pStr, pTmp, lsize);
+	snprintf(pTmp, sizeof(pTmp), " +");
+	strlcat(pStr, pTmp, 6 * info->SenseChannelLength);
 
 	for (i = 0; i < info->SenseChannelLength; i++) {
-		snprintf(pTmp, 6, "------");
-		strlcat(pStr, pTmp, lsize);
+		snprintf(pTmp, sizeof(pTmp), "------");
+		strlcat(pStr, pTmp, 6 * info->SenseChannelLength);
 	}
 
 	input_raw_info(true, &info->client->dev, "%s\n", pStr);
 
 	for (i = 0; i < info->ForceChannelLength; i++) {
 		memset(pStr, 0x0, lsize);
-		snprintf(pTmp, 7, "Tx%02d | ", i);
-		strlcat(pStr, pTmp, lsize);
+		snprintf(pTmp, sizeof(pTmp), "Tx%02d | ", i);
+		strlcat(pStr, pTmp, 6 * info->SenseChannelLength);
 
 		for (j = 0; j < info->SenseChannelLength; j++) {
-			snprintf(pTmp, 6, "%5d ", info->pFrame[(i * info->SenseChannelLength) + j]);
+			snprintf(pTmp, sizeof(pTmp), "%5d ", info->pFrame[(i * info->SenseChannelLength) + j]);
 			strlcat(pStr, pTmp, lsize);
 
 			if (i > 0) {
