@@ -28,7 +28,6 @@
 
 #include <linux/regulator/consumer.h>
 #include <linux/pinctrl/consumer.h>
-#include "../pinctrl/core.h"
 #include "fingerprint_common.h"
 
 #define VENDOR						"EGISTEC"

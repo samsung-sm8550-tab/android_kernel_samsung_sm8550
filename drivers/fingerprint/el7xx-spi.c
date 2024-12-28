@@ -47,12 +47,12 @@ static void el7xx_reset_control(struct el7xx_data *etspi, int status)
 
 void el7xx_pin_control(struct el7xx_data *etspi, bool pin_set)
 {
+#ifndef ENABLE_SENSORS_FPRINT_SECURE
 	int retval = 0;
 
 	if (IS_ERR(etspi->p))
 		return;
 
-	etspi->p->state = NULL;
 	if (pin_set) {
 		if (!IS_ERR(etspi->pins_poweron)) {
 			retval = pinctrl_select_state(etspi->p, etspi->pins_poweron);
@@ -68,6 +68,7 @@ void el7xx_pin_control(struct el7xx_data *etspi, bool pin_set)
 			pr_info("sleep\n");
 		}
 	}
+#endif
 }
 
 static void el7xx_power_control(struct el7xx_data *etspi, int status)
@@ -523,11 +524,10 @@ void el7xx_platformUninit(struct el7xx_data *etspi)
 static int el7xx_parse_dt(struct device *dev, struct el7xx_data *etspi)
 {
 	struct device_node *np = dev->of_node;
-	enum of_gpio_flags flags;
 	int retval = 0;
 	int gpio;
 
-	gpio = of_get_named_gpio_flags(np, "etspi-sleepPin", 0, &flags);
+	gpio = of_get_named_gpio(np, "etspi-sleepPin", 0);
 	if (gpio < 0) {
 		retval = gpio;
 		pr_err("fail to get sleepPin\n");
@@ -537,7 +537,7 @@ static int el7xx_parse_dt(struct device *dev, struct el7xx_data *etspi)
 		pr_info("sleepPin=%d\n", etspi->sleepPin);
 	}
 
-	gpio = of_get_named_gpio_flags(np, "etspi-ldoPin", 0, &flags);
+	gpio = of_get_named_gpio(np, "etspi-ldoPin", 0);
 	if (gpio < 0) {
 		etspi->ldo_pin = 0;
 		pr_info("not use ldo_pin\n");
@@ -1107,8 +1107,12 @@ static int __init el7xx_init(void)
 		pr_err("register_chrdev error.status:%d\n", retval);
 		return retval;
 	}
-
+#if (KERNEL_VERSION(6, 3, 0) <= LINUX_VERSION_CODE)
+	el7xx_class = class_create("egis_fingerprint");
+#else
 	el7xx_class = class_create(THIS_MODULE, "egis_fingerprint");
+#endif
+
 	if (IS_ERR(el7xx_class)) {
 		pr_err("class_create error.\n");
 		unregister_chrdev(EL7XX_MAJOR, el7xx_spi_driver.driver.name);
@@ -1144,7 +1148,7 @@ static void __exit el7xx_exit(void)
 	unregister_chrdev(EL7XX_MAJOR, el7xx_spi_driver.driver.name);
 }
 
-module_init(el7xx_init);
+late_initcall(el7xx_init);
 module_exit(el7xx_exit);
 
 MODULE_AUTHOR("fp.sec@samsung.com");
