@@ -277,5 +277,6 @@ obj-y += mfd/sm/sm5714/
 obj-y += input/touchscreen/stm/fts1ba90a/
 obj-y += muic/sm/sm5714/
 obj-y += usb/typec/sm/sm5714/
+obj-y += input/sec_input/stm32/
 obj-y += vibrator/dc/
 endif
