@@ -275,5 +275,6 @@ obj-y += sec_panel_notifier_v2/
 obj-y += mfd/sm/sm5714/
 obj-y += input/touchscreen/stm/fts1ba90a/
 obj-y += muic/sm/sm5714/
+obj-y += usb/typec/sm/sm5714/
 obj-y += vibrator/dc/
 endif
