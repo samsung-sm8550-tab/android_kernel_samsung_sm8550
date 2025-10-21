@@ -490,6 +490,12 @@ enum sec_battery_check {
  */
 #define SEC_CHARGER_MINIMUM_SIOP_CHARGING_CURRENT	2
 
+#if defined(CONFIG_TABLET_MODEL_CONCEPT) && !defined(CONFIG_SEC_FACTORY)
+#define SLOW_CHARGING_CURRENT_STANDARD          1000
+#else
+#define SLOW_CHARGING_CURRENT_STANDARD          400
+#endif
+
 #if defined(CONFIG_BATTERY_AGE_FORECAST)
 typedef struct sec_age_data {
 	unsigned int cycle;
