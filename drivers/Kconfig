@@ -363,4 +363,6 @@ source "drivers/mfd/slsi/s2mpb02/Kconfig"
 
 source "drivers/battery/charger/sm5440_charger/Kconfig"
 
+source "drivers/battery/charger/sm5714_charger/Kconfig"
+
 endmenu
