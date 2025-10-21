@@ -361,4 +361,6 @@ source "drivers/input/sec_input/stm_spi/Kconfig"
 
 source "drivers/mfd/slsi/s2mpb02/Kconfig"
 
+source "drivers/battery/charger/sm5440_charger/Kconfig"
+
 endmenu
