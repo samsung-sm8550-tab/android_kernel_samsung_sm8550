@@ -271,5 +271,6 @@ ifeq ($(CONFIG_SEC_PLATFORM_GTS9WIFI), y)
 obj-y += battery/charger/sm5440_charger/
 obj-y += battery/charger/sm5714_charger/
 obj-y += battery/fuelgauge/sm5714_fuelgauge/
+obj-y += sec_panel_notifier_v2/
 obj-y += vibrator/dc/
 endif
