@@ -367,6 +367,8 @@ source "drivers/battery/fuelgauge/sm5714_fuelgauge/Kconfig"
 
 source "drivers/mfd/sm/sm5714/Kconfig"
 
+source "drivers/input/touchscreen/stm/fts1ba90a/Kconfig"
+
 source "drivers/vibrator/dc/Kconfig"
 
 endmenu
