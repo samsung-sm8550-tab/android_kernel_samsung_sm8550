@@ -367,6 +367,8 @@ source "drivers/battery/charger/sm5714_charger/Kconfig"
 
 source "drivers/battery/fuelgauge/sm5714_fuelgauge/Kconfig"
 
+source "drivers/mfd/sm/sm5714/Kconfig"
+
 source "drivers/vibrator/dc/Kconfig"
 
 endmenu
