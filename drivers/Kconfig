@@ -377,6 +377,7 @@ source "drivers/usb/typec/sm/sm5714/Kconfig"
 
 source "drivers/input/sec_input/stm32/Kconfig"
 
+source "drivers/input/wacom_tablet/Kconfig"
 
 source "drivers/vibrator/dc/Kconfig"
 
