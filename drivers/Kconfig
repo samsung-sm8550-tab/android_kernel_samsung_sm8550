@@ -365,4 +365,6 @@ source "drivers/battery/charger/sm5440_charger/Kconfig"
 
 source "drivers/battery/charger/sm5714_charger/Kconfig"
 
+source "drivers/vibrator/dc/Kconfig"
+
 endmenu
