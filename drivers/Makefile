@@ -266,3 +266,7 @@ obj-y				+= sensors/vl53l8/
 endif
 obj-y				+= input/sec_input/stm_spi/
 obj-y				+= mfd/slsi/s2mpb02/
+
+ifeq ($(CONFIG_SEC_PLATFORM_GTS9WIFI), y)
+obj-y += battery/charger/sm5440_charger/
+endif
