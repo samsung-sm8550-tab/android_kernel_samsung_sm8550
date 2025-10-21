@@ -373,6 +373,9 @@ source "drivers/input/touchscreen/stm/fts1ba90a/Kconfig"
 
 source "drivers/muic/sm/sm5714/Kconfig"
 
+source "drivers/usb/typec/sm/sm5714/Kconfig"
+
+
 source "drivers/vibrator/dc/Kconfig"
 
 endmenu
