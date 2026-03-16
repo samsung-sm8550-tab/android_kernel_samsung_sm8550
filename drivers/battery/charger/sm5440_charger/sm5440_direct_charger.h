@@ -30,8 +30,12 @@
 #define PRE_CC_ST_IBUS_OFFSET   150
 #define CC_ST_IBUS_OFFSET       100
 
+#ifndef MAX
 #define MAX(a, b)               ((a > b) ? (a):(b))
+#endif
+#ifndef MIN
 #define MIN(a, b)               ((a < b) ? (a):(b))
+#endif
 
 enum sm_dc_charging_loop {
 	LOOP_IBUSLIM                = (0x1 << 7),
