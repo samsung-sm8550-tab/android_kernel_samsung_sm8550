@@ -1171,7 +1171,7 @@ static inline int _reduce_input_limit_current(struct sm5714_charger_data *charge
 
 static inline void _check_slow_rate_charging(struct sm5714_charger_data *charger)
 {
-	union power_supply_propval value;
+	union power_supply_propval value = { 0 };
 
 	if (charger->input_current <= SLOW_CHARGING_CURRENT_STANDARD &&
 			charger->cable_type != SEC_BATTERY_CABLE_NONE) {
